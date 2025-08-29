@@ -1,6 +1,9 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
@@ -13,10 +16,10 @@ app.get("/bfhl", (req, res) => {
 
 app.use(express.json());
 
-const FULL_NAME = "Anubhava Tripathi";
-const DOB = "21052004";
-const EMAIL = "anubhava2105@gmail.com";
-const ROLL_NUMBER = "22BCE0520";
+const FULL_NAME = process.env.FULL_NAME || "";
+const DOB = process.env.DOB || "";
+const EMAIL = process.env.EMAIL || "";
+const ROLL_NUMBER = process.env.ROLL_NUMBER || "";
 
 const formatUserId = () => `${FULL_NAME.toLowerCase()}_${DOB}`;
 
