@@ -17,9 +17,8 @@ const processData = (data) => {
   let sum = 0;
 
   data.forEach((item) => {
-    if (/^-?\d+$/.test(item)) {
-      // it's a number
-      let num = parseInt(item, 10);
+    if (!isNaN(item)) {
+      const num = parseInt(item, 10);
       sum += num;
       if (num % 2 === 0) {
         even.push(item);
@@ -27,10 +26,8 @@ const processData = (data) => {
         odd.push(item);
       }
     } else if (/^[a-zA-Z]+$/.test(item)) {
-      // it's alphabetic
       alphabets.push(item.toUpperCase());
     } else {
-      // special char
       specials.push(item);
     }
   });
