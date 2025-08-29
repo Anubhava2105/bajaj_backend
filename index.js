@@ -7,7 +7,7 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.get("/", (req, res) => {
+app.get("/bfhl", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
@@ -67,6 +67,11 @@ const processData = (data) => {
 app.get("/", (req, res) => {
   res.json({
     message: "Backend is running. Use POST /bfhl to test the API.",
+  });
+});
+app.get("/bfhl/get", (req, res) => {
+  res.json({
+    operation_code: 1,
   });
 });
 
