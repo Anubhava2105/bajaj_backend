@@ -1,5 +1,16 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
 app.use(express.json());
 
 const FULL_NAME = "Anubhava Tripathi";
@@ -45,10 +56,10 @@ const processData = (data) => {
     user_id: formatUserId(),
     email: EMAIL,
     roll_number: ROLL_NUMBER,
-    odd_numbers: odd,
-    even_numbers: even,
-    alphabets,
-    special_characters: specials,
+    odd_numbers: odd.toString(),
+    even_numbers: even.toString(),
+    alphabets: alphabets.toString(),
+    special_characters: specials.toString(),
     sum: sum.toString(),
     concat_string: concatString,
   };

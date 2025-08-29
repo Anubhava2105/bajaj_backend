@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BFHL Test Client</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 2rem;
+      }
+      textarea {
+        width: 100%;
+        height: 100px;
+        font-family: monospace;
+      }
+      pre {
+        background: #f0f0f0;
+        padding: 1rem;
+        border-radius: 5px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        margin-top: 1rem;
+      }
+      .error {
+        color: red;
+        margin-top: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>BFHL API Tester</h1>
+    <p>Example request body:</p>
+    <pre>{"data": ["a", "1", "334", "4", "R", "@"]}</pre>
+
+    <textarea id="input">{"data":["a","1","334","4","R","@"]}</textarea><br />
+    <button id="send">Send POST Request</button>
+
+    <p id="error" class="error"></p>
+
+    <h2>Response:</h2>
+    <pre id="output"></pre>
+
+    <script>
+      document.getElementById("send").addEventListener("click", async () => {
+        const raw = document.getElementById("input").value.trim();
+        const errorBox = document.getElementById("error");
+        const outputBox = document.getElementById("output");
+
+        errorBox.textContent = "";
+        outputBox.textContent = "";
+
+        let parsed;
+        try {
+          parsed = JSON.parse(raw);
+        } catch (e) {
+          errorBox.textContent = " Invalid JSON format.";
+          return;
+        }
+
+        if (!parsed.data || !Array.isArray(parsed.data)) {
+          errorBox.textContent = " JSON must contain a 'data' array.";
+          return;
+        }
+
+        try {
+          const res = await fetch("/bfhl", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(parsed),
+          });
+
+          if (!res.ok) {
+            throw new Error(`Server responded with ${res.status}`);
+          }
+
+          const json = await res.json();
+          outputBox.textContent = JSON.stringify(json, null, 2);
+        } catch (err) {
+          errorBox.textContent = " Request failed: " + err.message;
+        }
+      });
+    </script>
+  </body>
+</html>
