@@ -53,6 +53,11 @@ const processData = (data) => {
     concat_string: concatString,
   };
 };
+app.get("/", (req, res) => {
+  res.json({
+    message: "Backend is running. Use POST /bfhl to test the API.",
+  });
+});
 
 app.post("/bfhl", (req, res) => {
   try {
